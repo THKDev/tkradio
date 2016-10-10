@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_play">Abspielen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="label_connecting">Verbinde ...</string>
+    <string name="label_connected">Läuft ...</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="action_exit">Beenden</string>
+    <string name="label_settings_start_play_on_bluetooth">Abspielen starten sobald ein Bluetooth-Gerät verbunden ist.</string>
+    <string name="label_settings_start_on_startup">App beim starten des Gerätes starten</string>
+    <string name="label_settings_playlist_url">Senderlist</string>
+    <string name="action_reload_playlist">Senderliste laden</string>
+    <string name="label_settings_play_last_station">Letzte gewähle Station automatisch einschalten</string>
+    <string name="error_unknow">Es ist ein unbekannte Fehler aufgetreten.</string>
+    <string name="action_about">Über</string>
+</resources>

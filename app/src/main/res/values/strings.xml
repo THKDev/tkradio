@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name" translatable="false">TK Radio</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_play">Play</string>
+    <string name="label_connecting">Connecting ...</string>
+    <string name="label_connected">Listening ...</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="action_exit">Exit</string>
+    <string name="label_settings_start_play_on_bluetooth">Start playing when a bluetooth device is connected</string>
+    <string name="label_settings_start_on_startup">Start this App after booting of the device</string>
+    <string name="label_settings_playlist_url">Playlist</string>
+    <string name="action_reload_playlist">Reload playlist</string>
+    <string name="label_settings_play_last_station">Play last station on startup</string>
+    <string name="error_unknow">An unknow error has occured.</string>
+    <string name="action_about">About</string>
+</resources>

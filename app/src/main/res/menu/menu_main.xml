@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".activity.main.MainActivity">
+
+    <group>
+        <item
+            android:id="@+id/action_settings"
+            android:title="@string/action_settings"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/action_reload_playlist"
+            android:title="@string/action_reload_playlist"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/action_about"
+            android:title="@string/action_about"
+            app:showAsAction="never"/>
+    </group>
+
+    <item
+        android:id="@+id/action_exit"
+        android:title="@string/action_exit"
+        app:showAsAction="never"/>
+</menu>
