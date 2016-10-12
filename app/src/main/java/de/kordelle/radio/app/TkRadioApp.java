@@ -12,7 +12,7 @@ import de.kordelle.radio.logging.LogHelper;
 /**
  * Created by thomask on 25.09.16.
  */
-@ReportsCrashes(mailTo = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.error_unknow)
+@ReportsCrashes(mailTo = "developer@droid.kordelle.de", mode = ReportingInteractionMode.TOAST, resToastText = R.string.error_unknow)
 public class TkRadioApp extends Application
 {
     private static final String TAG = TkRadioApp.class.getCanonicalName();

@@ -10,6 +10,8 @@ import de.kordelle.radio.BuildConfig;
  */
 public class AboutLayoutData extends BaseObservable
 {
+    private static final String GITHUB_REPRO = "https://github.com/THKDev/tkradio";
+
     @Bindable
     public String getVersion()
     {
@@ -20,5 +22,11 @@ public class AboutLayoutData extends BaseObservable
     public String getBuildType()
     {
         return BuildConfig.BUILD_TYPE;
+    }
+
+    @Bindable
+    public String getRepository()
+    {
+        return GITHUB_REPRO;
     }
 }

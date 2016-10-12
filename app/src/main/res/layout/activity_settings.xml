@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorPrimaryLight"
     tools:context=".activity.settings.SettingsActivity">
 
     <LinearLayout
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_settings_start_play_on_bluetooth"
             android:id="@+id/switch_start_on_bt_connected"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_size"/>
     </LinearLayout>
 
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_settings_start_on_startup"
             android:id="@+id/switch_start_after_boot"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_size"/>
     </LinearLayout>
 
@@ -56,6 +59,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_settings_play_last_station"
             android:id="@+id/switch_play_last_station"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text_size"/>
 
     </LinearLayout>
@@ -74,11 +78,13 @@
             android:text="@string/label_settings_playlist_url"
             android:id="@+id/textView"
             android:textSize="@dimen/text_size"
+            android:textColor="@color/colorPrimaryDark"
             android:labelFor="@+id/et_playlist_uri"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
             android:id="@+id/et_playlist_uri"
             android:inputType="textUri"
             android:hint="http://"

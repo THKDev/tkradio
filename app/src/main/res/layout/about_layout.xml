@@ -89,6 +89,22 @@
                         android:textColor="?android:attr/editTextColor"/>
                 </TableRow>
 
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Source code"
+                        android:textColor="?android:attr/editTextColor"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:linksClickable="true"
+                        android:text='@{aboutData.repository, default="https://github.com/THKDev/tkradio"}'
+                        android:textColor="?android:attr/editTextColor"/>
+                </TableRow>
+
             </TableLayout>
 
         </LinearLayout>

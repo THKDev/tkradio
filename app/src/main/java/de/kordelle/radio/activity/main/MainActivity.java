@@ -12,7 +12,6 @@ import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -61,10 +60,10 @@ import de.kordelle.radio.service.MediaPlayerService;
 /**
  *
  */
-public class MainActivity extends AppCompatActivity
-                          implements RadioStationListViewAdapter.OnListItemSelectionListener,
-                                     DownLoadPlayList.DownLoadPlayListListener,
-                                     ViewTreeObserver.OnGlobalLayoutListener
+public final class MainActivity extends AppCompatActivity
+                                implements RadioStationListViewAdapter.OnListItemSelectionListener,
+                                           DownLoadPlayList.DownLoadPlayListListener,
+                                           ViewTreeObserver.OnGlobalLayoutListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 

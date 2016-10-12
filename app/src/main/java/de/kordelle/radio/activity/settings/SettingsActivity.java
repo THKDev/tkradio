@@ -13,7 +13,7 @@ import butterknife.OnCheckedChanged;
 import de.kordelle.radio.R;
 import de.kordelle.radio.data.settings.SettingsHolder;
 
-public class SettingsActivity extends AppCompatActivity
+public final class SettingsActivity extends AppCompatActivity
 {
     @BindView(R.id.switch_start_on_bt_connected)
     protected Switch btConnected;

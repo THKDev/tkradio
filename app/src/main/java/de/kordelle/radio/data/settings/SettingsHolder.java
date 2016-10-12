@@ -13,9 +13,9 @@ import de.kordelle.radio.logging.LogHelper;
 /**
  * Created by thomas.kordelle on 16.09.16.
  */
-public class SettingsHolder
+public final class SettingsHolder
 {
-    public static final String DEFAULT_PLAYLIST_URI = "http://www.kordelle.de/tkradio/playlist.pls";
+    public static final String DEFAULT_PLAYLIST_URI = "http://droid.kordelle.de/tkradio/playlist.pls";
     public static final String KEY_SETTINGS = "Settings";
     public static final String KEY_START_PLAY_BLUETOOTH = "startPlayingOnBTConnected";
     public static final String KEY_START_AFTER_BOOT = "startAfterBoot";
@@ -23,14 +23,11 @@ public class SettingsHolder
     public static final String KEY_PLAY_LAST_STATION = "playLastStation";
     public static final String KEY_LAST_STATION = "lastStation";
 
-    public static final String EXTRAS_KEY = "settingsKey";
-    public static final String EXTRAS_VALUE = "settingsValue";
-
     /**
      *
      * @param <T>
      */
-    public class SettingsChangeData<T> {
+    public final class SettingsChangeData<T> {
         private final String key;
         private final T value;
         public SettingsChangeData(final String key, final T value) {
@@ -48,7 +45,7 @@ public class SettingsHolder
     /**
      *
      */
-    private class SettingsAccessor
+    private final class SettingsAccessor
     {
         private static final String TAG = "SettingsAccessor";
 
