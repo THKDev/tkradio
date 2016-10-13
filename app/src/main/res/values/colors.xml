@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- blue <=> orange -->
-    <color name="colorPrimary">#3080e8</color>
-    <color name="colorAccent">#FF5F00</color>
-    <color name="colorPrimaryDark">#454953</color>
-    <color name="colorPrimaryLight">#e8edf7</color>
+    <!--<color name="colorPrimary">#3080e8</color>-->
+    <!--<color name="colorAccent">#FF5F00</color>-->
+    <!--<color name="colorPrimaryDark">#454953</color>-->
+    <!--<color name="colorPrimaryLight">#e8edf7</color>-->
 
     <!-- gray -->
-    <!--<color name="colorPrimary">#848484</color>-->
-    <!--<color name="colorAccent">#B3B5B3</color>-->
-    <!--<color name="colorPrimaryDark">#4A4A4A</color>-->
-    <!--<color name="colorPrimaryLight">#EDEDED</color>-->
+    <color name="colorPrimary">#848484</color>
+    <color name="colorAccent">#B3B5B3</color>
+    <color name="colorPrimaryDark">#4A4A4A</color>
+    <color name="colorPrimaryLight">#EDEDED</color>
 </resources>

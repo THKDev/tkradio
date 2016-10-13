@@ -10,8 +10,8 @@ android {
         applicationId "de.kordelle.radio"
         minSdkVersion 19
         targetSdkVersion 23
-        versionName '1.02.04'
-        versionCode 10204
+        versionName '1.02.05'
+        versionCode 10205
         signingConfig signingConfigs.ReleaseBuild
     }
     buildTypes {

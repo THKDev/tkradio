@@ -11,7 +11,8 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:text="@string/app_name"
-                        android:textColor="?android:attr/editTextColor"
+                        android:textColor="@color/colorPrimaryLight"
                         android:textSize="28sp"/>
                 </TableRow>
 
@@ -50,13 +51,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Version"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{aboutData.version, default=1.00}"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
                 </TableRow>
 
                 <TableRow>
@@ -65,13 +66,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Build"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{aboutData.buildType, default=custom}"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
                 </TableRow>
 
                 <TableRow>
@@ -80,13 +81,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Developer"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="(c) 2016 T. Kordelle"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
                 </TableRow>
 
                 <TableRow>
@@ -95,14 +96,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Source code"
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:linksClickable="true"
                         android:text='@{aboutData.repository, default="https://github.com/THKDev/tkradio"}'
-                        android:textColor="?android:attr/editTextColor"/>
+                        android:textColor="@color/colorPrimaryLight"/>
                 </TableRow>
 
             </TableLayout>
