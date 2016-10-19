@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -248,6 +249,7 @@ public class DownLoadPlayList extends AsyncTask<String, Void, String>
             try {
                 File file = new File(context.getFilesDir(), SAVED_PLAYLIST_FILENAME);
                 if (file.exists()) {
+                    long l = file.length();
                     if (file.length() > 0)
                         return IOUtils.toString(new FileInputStream(file), StandardCharsets.UTF_8);
                     else
@@ -276,6 +278,14 @@ public class DownLoadPlayList extends AsyncTask<String, Void, String>
     public static void storePlayList(final Context context, final InputStream is) throws IOException
     {
         File file = new File(context.getFilesDir(), DownLoadPlayList.SAVED_PLAYLIST_FILENAME);
-        IOUtils.copy(is, new FileOutputStream(file));
+        try {
+            OutputStream os = new FileOutputStream(file, false);
+            is.reset(); // rewind to beginning of stream
+            IOUtils.copy(is, os);
+            IOUtils.closeQuietly(os);
+        }
+        finally {
+            file.delete();
+        }
     }
 }
