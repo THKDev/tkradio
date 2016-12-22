@@ -119,7 +119,7 @@ public final class MainActivity extends AppCompatActivity
     };
 
     /**
-     * delay selection. {@link RecyclerView} must first scroll and update the UI before the selected
+     * delay selection. {@link RecyclerView} must scroll first and update the UI before the selected
      * entry can be highlighted.
      */
     private class DelayedSelection implements Runnable {
@@ -175,6 +175,9 @@ public final class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     *
+     */
     private void startMediaService()
     {
         if (mediaServiceIntent == null)

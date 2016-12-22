@@ -1,5 +1,6 @@
 package de.kordelle.radio.service;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothProfile;
 import android.content.ComponentName;
@@ -7,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaFormat;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.media.RemoteControlClient;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
@@ -21,8 +24,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.kordelle.radio.data.RadioStation;
 import de.kordelle.radio.data.RadioStationComparator;
@@ -43,6 +44,9 @@ public class MediaPlayerService extends Service
                                            MediaPlayer.OnSeekCompleteListener
 {
     private static final String TAG = MediaPlayerService.class.getSimpleName();
+
+    public static final String PLAYSTATE_CHANGED = "com.android.music.playstatechanged";
+    public static final String META_CHANGED = "com.android.music.metachanged";
 
     public enum MediaPlayerState {
         UNKNOWN,
@@ -97,7 +101,7 @@ public class MediaPlayerService extends Service
      * if network is to slow or has misfires wait some time and then restart media play.
      * task will be canceled if media play can recover by self within the time frame.
      */
-    private static final long BUFFER_RESTART_DELAY = 10 * 1000; // wait 10 seconds before restart mediaplayer
+    private static final long BUFFER_RESTART_DELAY = 5 * 1000; // wait 5 seconds before restart mediaplayer
     private Runnable reanimateMediaPlay = new Runnable() {
         @Override
         public void run() {
@@ -116,6 +120,7 @@ public class MediaPlayerService extends Service
 
     /////////////////////////////////////////////////////////////////
     private MediaPlayer  mediaPlayer = null;
+    private RemoteControlClient remoteControlClient;
     private WifiManager.WifiLock  wifiLock = null;
     private MediaPlayerState playerState = MediaPlayerState.UNKNOWN;
     private RadioStation currentStation;
@@ -165,17 +170,30 @@ public class MediaPlayerService extends Service
         return START_STICKY;
     }
 
+    /**
+     *
+     */
     private void registerForMediaButtons()
     {
         componentNameMediaButton = new ComponentName(getPackageName(), MediaEventBroadcastReceiver.class.getName());
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am.registerMediaButtonEventReceiver(componentNameMediaButton);
+
+        Intent i = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        i.setComponent(componentNameMediaButton);
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
+        remoteControlClient = new RemoteControlClient(pi);
+        am.registerRemoteControlClient(remoteControlClient);
     }
 
+    /**
+     *
+     */
     private void unregisterForMediaButtons()
     {
         AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am.unregisterMediaButtonEventReceiver(componentNameMediaButton);
+        am.unregisterRemoteControlClient(remoteControlClient);
     }
 
     /**
@@ -221,6 +239,10 @@ public class MediaPlayerService extends Service
         data.data = value;
 
         EventBus.getDefault().post(data);
+
+        notifyChange(PLAYSTATE_CHANGED);
+        if (state() == MediaPlayerState.PLAYING)
+            notifyChange(META_CHANGED);
     }
 
     /**
@@ -381,6 +403,60 @@ public class MediaPlayerService extends Service
         }
     }
 
+    /**
+     * broadcast state change to remote client
+     * @param what
+     */
+    private void notifyChange(final String what)
+    {
+        LogHelper.i(TAG, String.format("notifyChange for %s", what));
+
+        final boolean isPlaying = state() == MediaPlayerService.MediaPlayerState.PLAYING;
+        Intent i = new Intent(what);
+        i.putExtra("id", Long.valueOf(mediaPlayer.getAudioSessionId()));
+        i.putExtra("artist", "Artist1");
+        i.putExtra("album", "Album1");
+        i.putExtra("track", "Track1");
+        i.putExtra("playing", isPlaying);
+        //i.putExtra("position", mediaPlayer.getCurrentPosition());
+        sendBroadcast(i);
+
+        if (PLAYSTATE_CHANGED.equals(what))
+        {
+            switch (state())
+            {
+                case BUFFERING:
+                    remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_BUFFERING);
+                    break;
+                case PLAYING:
+                    remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
+                    break;
+                case STOPPED:
+                    remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_STOPPED);
+                    break;
+                case ERROR:
+                    remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_ERROR);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (META_CHANGED.equals(what))
+        {
+            RemoteControlClient.MetadataEditor ed = remoteControlClient.editMetadata(true);
+            ed.putString(MediaMetadataRetriever.METADATA_KEY_TITLE, "Track");
+            ed.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, "Album");
+            ed.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, "Artist");
+            if (mediaPlayer.isPlaying())
+                ed.putLong(MediaMetadataRetriever.METADATA_KEY_DURATION, mediaPlayer.getDuration());
+
+//            Bitmap b = MusicUtils.getArtwork(this, getAudioId(), getAlbumId(), false);
+//            if (b != null) {
+//                ed.putBitmap(MetadataEditor.BITMAP_KEY_ARTWORK, b);
+//            }
+            ed.apply();
+        }
+    }
 
     /**
      * @see android.media.MediaPlayer.OnPreparedListener#onPrepared(MediaPlayer)
@@ -389,7 +465,7 @@ public class MediaPlayerService extends Service
     @Override
     public void onPrepared(MediaPlayer mp)
     {
-        LogHelper.d(TAG, "start playing of media.");
+        LogHelper.i(TAG, "start playing of media.");
         try
         {
             mediaPlayer.start();
@@ -405,13 +481,13 @@ public class MediaPlayerService extends Service
     @Override
     public void onCompletion(MediaPlayer mp)
     {
-        LogHelper.d(TAG, "On completion");
+        LogHelper.i(TAG, "On completion");
     }
 
     @Override
     public void onSeekComplete(MediaPlayer mp)
     {
-        LogHelper.d(TAG, "On seek complete");
+        LogHelper.i(TAG, "On seek complete");
     }
 
     /**
@@ -424,7 +500,7 @@ public class MediaPlayerService extends Service
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra)
     {
-        LogHelper.d(TAG, String.format("What: %d, Extra: %d", what, extra));
+        LogHelper.i(TAG, String.format("What: %d, Extra: %d", what, extra));
 
         try
         {
@@ -453,7 +529,7 @@ public class MediaPlayerService extends Service
     @Override
     public boolean onInfo(MediaPlayer mp, int what, int extra)
     {
-        LogHelper.d(TAG, String.format("What: %d, Extra: %d", what, extra));
+        LogHelper.i(TAG, String.format("What: %d, Extra: %d", what, extra));
 
         switch (what)
         {
@@ -470,11 +546,11 @@ public class MediaPlayerService extends Service
             default:
                 MediaPlayer.TrackInfo[] trackInfos = mediaPlayer.getTrackInfo();
                 for (MediaPlayer.TrackInfo ti : trackInfos) {
-                    LogHelper.d(TAG, "TrackInfo: " + ti.toString());
+                    LogHelper.i(TAG, "TrackInfo: " + ti.toString());
                     MediaFormat fmt = ti.getFormat();
                     if (fmt != null) {
-                        LogHelper.d(TAG, "Bitrate: " + fmt.getInteger(MediaFormat.KEY_BIT_RATE));
-                        LogHelper.d(TAG, "Channel: " + fmt.getInteger(MediaFormat.KEY_CHANNEL_COUNT));
+                        LogHelper.i(TAG, "Bitrate: " + fmt.getInteger(MediaFormat.KEY_BIT_RATE));
+                        LogHelper.i(TAG, "Channel: " + fmt.getInteger(MediaFormat.KEY_CHANNEL_COUNT));
                     }
                 }
                 break;
@@ -547,6 +623,12 @@ public class MediaPlayerService extends Service
         {
             switch (event.keyEvent().getKeyCode())
             {
+                case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                    if (playing())
+                        stop();
+                    else
+                        start();
+                    break;
                 case KeyEvent.KEYCODE_MEDIA_PLAY:
                     start();
                     break;
